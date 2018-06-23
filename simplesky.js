@@ -1,14 +1,32 @@
 const request  = require('request');
+
+var getQueryString = (lang, units, exclude, extend) => {
+    return new Promise((resolve) => {
+        let queryString = "?";
+        if(lang){
+            queryString+=`lang=${lang}&`;
+        }
+        if(units){
+            queryString+=`units=${units}`;
+        }
+        resolve(queryString);
+    })
+}
+
 class simplesky{
 
     /**
      * Default constructor for simplesky object
      * @param {string} mapsKey Google Maps API Key
      * @param {string} darkskyKey DarkSky API Key
+     * @param {string} language Desired language for weather output
+     * @param {string} units Desired units for weather output
      */
-    constructor(mapsKey, darkskyKey) {
+    constructor(mapsKey, darkskyKey, language = 'en', units = 'auto') {
         this.mapAPIKey = mapsKey;
         this.darkAPIKey = darkskyKey;
+        this.lang = language
+        this.units = units;
     }
     
     /**
@@ -17,14 +35,15 @@ class simplesky{
      * @param {number} lat Exact lattitude coordinate, optional
      * @param {number} lng Exact longitude coordinate, optional
      */
-    getFull(location, lat, lng, options){
+    async getFull(location, lat, lng, options){
+        var defaultQuery = await getQueryString(this.lang, this.units);
         return new Promise((resolve, reject) => {
             if(location){
                 this.getCoordinates(location).then((locationData) =>{
                     let lat = locationData.lat;
                     let lng = locationData.lng;
                     request({
-                        url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}`,
+                        url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${defaultQuery}`,
                         json:true,
                         gzip:true
                     }, (error, response, body) => {
@@ -39,7 +58,7 @@ class simplesky{
                 })
             }else if(!location){
                 request({
-                    url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}`,
+                    url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${defaultQuery}`,
                     json:true,
                     gzip: true
                 },(error, response,body) => {
@@ -61,15 +80,15 @@ class simplesky{
      * @param {number} lat Exact lattitude coordinate
      * @param {number} lng Exact longituted coordinate
      */
-    getCurrently(location, lat, lng){
-        let excludeString = '?exclude=minutely,hourly,daily,alerts,flags';
+    async getCurrently(location, lat, lng){
+        let queryString = await getQueryString(this.lang, this.units) + '&exclude=minutely,hourly,daily,alerts,flags';
         return new Promise((resolve, reject) =>{
             if(location){
                 this.getCoordinates(location).then((locationData)=>{
                     let lat = locationData.lat;
                     let lng = locationData.lng;
                     request({
-                        url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${excludeString}`,
+                        url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${queryString}`,
                         json:true,
                         gzip:true
                     },(error, response, body) =>{
@@ -82,7 +101,7 @@ class simplesky{
                 });
             }else if(lat && lng){
                 request({
-                    url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${excludeString}`,
+                    url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${queryString}`,
                     json:true,
                     gzip:true
                 },(error, response, body) =>{
