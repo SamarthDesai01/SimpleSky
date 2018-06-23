@@ -25,7 +25,8 @@ class simplesky{
                     let lng = locationData.lng;
                     request({
                         url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}`,
-                        json:true
+                        json:true,
+                        gzip:true
                     }, (error, response, body) => {
                         if(error){
                             reject(new Error('Unable to connect to Dark Sky API'));
@@ -39,16 +40,60 @@ class simplesky{
             }else if(!location){
                 request({
                     url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}`,
-                    json:true
+                    json:true,
+                    gzip: true
                 },(error, response,body) => {
                     if(error){
                         reject(new Error('Unable to connect to Dark Sky API'))
                     }else{
                         resolve(body);
                     }
-                })
+                });
             }else{
                 reject(new Error("Incomplete input paramaters"));
+            }
+        });
+    }
+    
+    /**
+     * Retrieve only the current weather information
+     * @param {string} location Natural language entry of location 
+     * @param {number} lat Exact lattitude coordinate
+     * @param {number} lng Exact longituted coordinate
+     */
+    getCurrently(location, lat, lng){
+        let excludeString = '?exclude=minutely,hourly,daily,alerts,flags';
+        return new Promise((resolve, reject) =>{
+            if(location){
+                this.getCoordinates(location).then((locationData)=>{
+                    let lat = locationData.lat;
+                    let lng = locationData.lng;
+                    request({
+                        url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${excludeString}`,
+                        json:true,
+                        gzip:true
+                    },(error, response, body) =>{
+                        if(error){
+                            reject(new Error("Unable to contact Dark Sky API"));
+                        }else{
+                            resolve(body);
+                        }
+                    });
+                });
+            }else if(lat && lng){
+                request({
+                    url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${excludeString}`,
+                    json:true,
+                    gzip:true
+                },(error, response, body) =>{
+                    if(error){
+                        reject(new Error("Unable to contact Dark Sky API"));
+                    }else{
+                        resolve(body);
+                    }
+                });
+            }else{
+                reject(new Error("Incomplete Input parameters"));
             }
         });
     }
