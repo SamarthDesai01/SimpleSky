@@ -66,7 +66,7 @@ class simplesky{
                 }).catch((error) => {
                     reject(error);
                 })
-            }else if(!location){
+            }else if(!location && (lat && lng)){
                 request({
                     url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${defaultQuery}`,
                     json:true,
