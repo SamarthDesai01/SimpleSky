@@ -1,15 +1,22 @@
 const request  = require('request');
 
-var getQueryString = (lang, units, exclude, extend) => {
+var getQueryString = (lang, units, exclude = [], extend = false) => {
     return new Promise((resolve) => {
         let queryString = "?";
         if(lang){
             queryString+=`lang=${lang}&`;
         }
         if(units){
-            queryString+=`units=${units}`;
+            queryString+=`units=${units}&`;
+        }
+        if(exclude.length >= 1){
+            queryString+=`exclude=${exclude.join(',')}&`;
+        }
+        if(extend){
+            queryString+='extend=hourly';
         }
         resolve(queryString);
+        
     })
 }
 
@@ -30,13 +37,27 @@ class simplesky{
     }
     
     /**
-     * Interface with the DarkSky API to get full weather data for your location
+     * 
+     * @param {string} location Natural language entry of location  
+     * @param {*} lat Exact lattitude coordinate, optional
+     * @param {*} lng Exact longitude coordinate, optional
+     */
+    async getFull(location, lat, lng){
+        return this.getWeather(location, lat, lng);
+    }
+
+    /**
+     * Interface with the DarkSky API to get weather data for your location, you can tweak what data is sent
+     * back to you through the provided arguments to help save on time and data
      * @param {string} location Natural language entry of location 
      * @param {number} lat Exact lattitude coordinate, optional
      * @param {number} lng Exact longitude coordinate, optional
+     * @param {Array} exclude Array containing string of blocks to exclude, optional
+     * @param {boolean} extend Specify if you want weather for the next 168 hours 
      */
-    async getFull(location, lat, lng, options){
-        var defaultQuery = await getQueryString(this.lang, this.units);
+    async getWeather(location, lat, lng, exclude = [], extend = false){
+        var defaultQuery = await getQueryString(this.lang, this.units, exclude, extend);
+        console.log(defaultQuery);
         return new Promise((resolve, reject) => {
             if(location){
                 this.getCoordinates(location).then((locationData) =>{
@@ -81,40 +102,8 @@ class simplesky{
      * @param {number} lng Exact longituted coordinate
      */
     async getCurrently(location, lat, lng){
-        let queryString = await getQueryString(this.lang, this.units) + '&exclude=minutely,hourly,daily,alerts,flags';
-        return new Promise((resolve, reject) =>{
-            if(location){
-                this.getCoordinates(location).then((locationData)=>{
-                    let lat = locationData.lat;
-                    let lng = locationData.lng;
-                    request({
-                        url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${queryString}`,
-                        json:true,
-                        gzip:true
-                    },(error, response, body) =>{
-                        if(error){
-                            reject(new Error("Unable to contact Dark Sky API"));
-                        }else{
-                            resolve(body);
-                        }
-                    });
-                });
-            }else if(lat && lng){
-                request({
-                    url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng}${queryString}`,
-                    json:true,
-                    gzip:true
-                },(error, response, body) =>{
-                    if(error){
-                        reject(new Error("Unable to contact Dark Sky API"));
-                    }else{
-                        resolve(body);
-                    }
-                });
-            }else{
-                reject(new Error("Incomplete Input parameters"));
-            }
-        });
+        let excludeList = ['minutely','hourly','daily', 'alerts', 'flags'];
+        return this.getWeather(location,lat,lng,excludeList);
     }
 
     /**
