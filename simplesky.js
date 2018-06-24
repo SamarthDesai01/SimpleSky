@@ -90,7 +90,7 @@ class simplesky{
      * @param {*} lat Exact lattitude coordinate, optional
      * @param {*} lng Exact longitude coordinate, optional
      */
-    async getFull(location, lat, lng){
+    getFull(location, lat, lng){
         return this.getWeather(location, lat, lng);
     }
 
@@ -100,7 +100,7 @@ class simplesky{
      * @param {number} lat Exact lattitude coordinate, optional
      * @param {number} lng Exact longituted coordinate, optional
      */
-    async getCurrently(location, lat, lng){
+    getCurrently(location, lat, lng){
         let excludeList = ['minutely','hourly','daily', 'alerts', 'flags'];
         return this.getWeather(location,lat,lng,excludeList);
     }
@@ -110,11 +110,33 @@ class simplesky{
      * @param {string} location Natural language entry of location 
      * @param {number} lat Exact lattitude coordinate, optional
      * @param {number} lng Exact longituted coordinate, optional
-     * @param {boolean} extend Provide data for the next 168 hours
+     * @param {boolean} extend Provide data for the next 168 hours, optional
      */
-    async getHourly(location, lat, lng, extend = false){
+    getHourly(location, lat, lng, extend = false){
         let excludeList = ['currently','minutely','daily', 'alerts', 'flags'];
         return this.getWeather(location,lat,lng,excludeList,extend);
+    }
+
+    /**
+     * Retrieve only the minutely weather information
+     * @param {string} location Natural language entry of location 
+     * @param {number} lat Exact lattitude coordinate, optional
+     * @param {number} lng Exact longituted coordinate, optional
+     */
+    getMinutely(location,lat,lng){
+        let excludeList = ['currently','hourly','daily','alerts','flags'];
+        return this.getWeather(location, lat, lng,excludeList);
+    }
+
+    /**
+     * Retrieve only the daily weather information
+     * @param {string} location Natural language entry of location 
+     * @param {number} lat Exact lattitude coordinate, optional
+     * @param {number} lng Exact longituted coordinate, optional
+     */
+    getDaily(location, lat,lng){
+        let excludeList = ['minutely', 'hourly', 'currently', 'alerts', 'flags'];
+        return this.getWeather(location, lat, lng, excludeList);
     }
 
     /**
