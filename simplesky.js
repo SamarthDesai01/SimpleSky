@@ -35,16 +35,6 @@ class simplesky{
         this.lang = language
         this.units = units;
     }
-    
-    /**
-     * 
-     * @param {string} location Natural language entry of location  
-     * @param {*} lat Exact lattitude coordinate, optional
-     * @param {*} lng Exact longitude coordinate, optional
-     */
-    async getFull(location, lat, lng){
-        return this.getWeather(location, lat, lng);
-    }
 
     /**
      * Interface with the DarkSky API to get weather data for your location, you can tweak what data is sent
@@ -53,11 +43,10 @@ class simplesky{
      * @param {number} lat Exact lattitude coordinate, optional
      * @param {number} lng Exact longitude coordinate, optional
      * @param {Array} exclude Array containing string of blocks to exclude, optional
-     * @param {boolean} extend Specify if you want weather for the next 168 hours 
+     * @param {boolean} extend Specify if you want weather for the next 168 hours, optional
      */
     async getWeather(location, lat, lng, exclude = [], extend = false){
         var defaultQuery = await getQueryString(this.lang, this.units, exclude, extend);
-        console.log(defaultQuery);
         return new Promise((resolve, reject) => {
             if(location){
                 this.getCoordinates(location).then((locationData) =>{
@@ -96,14 +85,36 @@ class simplesky{
     }
     
     /**
+     * Get complete weather data for your location
+     * @param {string} location Natural language entry of location  
+     * @param {*} lat Exact lattitude coordinate, optional
+     * @param {*} lng Exact longitude coordinate, optional
+     */
+    async getFull(location, lat, lng){
+        return this.getWeather(location, lat, lng);
+    }
+
+    /**
      * Retrieve only the current weather information
      * @param {string} location Natural language entry of location 
-     * @param {number} lat Exact lattitude coordinate
-     * @param {number} lng Exact longituted coordinate
+     * @param {number} lat Exact lattitude coordinate, optional
+     * @param {number} lng Exact longituted coordinate, optional
      */
     async getCurrently(location, lat, lng){
         let excludeList = ['minutely','hourly','daily', 'alerts', 'flags'];
         return this.getWeather(location,lat,lng,excludeList);
+    }
+    
+    /**
+     * Retrieve only the hourly weather information
+     * @param {string} location Natural language entry of location 
+     * @param {number} lat Exact lattitude coordinate, optional
+     * @param {number} lng Exact longituted coordinate, optional
+     * @param {boolean} extend Provide data for the next 168 hours
+     */
+    async getHourly(location, lat, lng, extend = false){
+        let excludeList = ['currently','minutely','daily', 'alerts', 'flags'];
+        return this.getWeather(location,lat,lng,excludeList,extend);
     }
 
     /**
