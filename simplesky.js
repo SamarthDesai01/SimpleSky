@@ -40,7 +40,7 @@ class simplesky{
      * Interface with the DarkSky API to get weather data for your location, you can tweak what data is sent
      * back to you through the provided arguments to help save on time and data
      * @param {string} location Natural language entry of location 
-     * @param {number} lat Exact lattitude coordinate, optional
+     * @param {number} lat Exact latitude coordinate, optional
      * @param {number} lng Exact longitude coordinate, optional
      * @param {Array} exclude Array containing string of blocks to exclude, optional
      * @param {boolean} extend Specify if you want weather for the next 168 hours, optional
@@ -87,7 +87,7 @@ class simplesky{
     /**
      * Get complete weather data for your location
      * @param {string} location Natural language entry of location  
-     * @param {*} lat Exact lattitude coordinate, optional
+     * @param {*} lat Exact latitude coordinate, optional
      * @param {*} lng Exact longitude coordinate, optional
      */
     getFull(location, lat, lng){
@@ -97,46 +97,70 @@ class simplesky{
     /**
      * Retrieve only the current weather information
      * @param {string} location Natural language entry of location 
-     * @param {number} lat Exact lattitude coordinate, optional
+     * @param {number} lat Exact latitude coordinate, optional
      * @param {number} lng Exact longituted coordinate, optional
      */
     getCurrently(location, lat, lng){
         let excludeList = ['minutely','hourly','daily', 'alerts', 'flags'];
-        return this.getWeather(location,lat,lng,excludeList);
+        return new Promise((resolve, reject) => {
+            this.getWeather(location,lat,lng,excludeList).then((response) => {
+                resolve(response.currently);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
     }
     
     /**
      * Retrieve only the hourly weather information
      * @param {string} location Natural language entry of location 
-     * @param {number} lat Exact lattitude coordinate, optional
-     * @param {number} lng Exact longituted coordinate, optional
+     * @param {number} lat Exact latitude coordinate, optional
+     * @param {number} lng Exact longitude coordinate, optional
      * @param {boolean} extend Provide data for the next 168 hours, optional
      */
     getHourly(location, lat, lng, extend = false){
         let excludeList = ['currently','minutely','daily', 'alerts', 'flags'];
-        return this.getWeather(location,lat,lng,excludeList,extend);
+        return new Promise((resolve, reject) => {
+            this.getWeather(location,lat,lng,excludeList,extend).then((response) => {
+                resolve(response.hourly);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
     }
 
     /**
      * Retrieve only the minutely weather information
      * @param {string} location Natural language entry of location 
-     * @param {number} lat Exact lattitude coordinate, optional
-     * @param {number} lng Exact longituted coordinate, optional
+     * @param {number} lat Exact latitude coordinate, optional
+     * @param {number} lng Exact longitude coordinate, optional
      */
     getMinutely(location,lat,lng){
         let excludeList = ['currently','hourly','daily','alerts','flags'];
-        return this.getWeather(location, lat, lng,excludeList);
+        return new Promise((resolve, reject) => {
+            this.getWeather(location,lat,lng,excludeList).then((response) => {
+                resolve(response.minutely);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
     }
 
     /**
      * Retrieve only the daily weather information
      * @param {string} location Natural language entry of location 
-     * @param {number} lat Exact lattitude coordinate, optional
-     * @param {number} lng Exact longituted coordinate, optional
+     * @param {number} lat Exact latitude coordinate, optional
+     * @param {number} lng Exact longitude coordinate, optional
      */
     getDaily(location, lat,lng){
         let excludeList = ['minutely', 'hourly', 'currently', 'alerts', 'flags'];
-        return this.getWeather(location, lat, lng, excludeList);
+        return new Promise((resolve, reject) => {
+            this.getWeather(location,lat,lng,excludeList).then((response) => {
+                resolve(response.daily);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
     }
 
     /**
