@@ -139,7 +139,11 @@ class simplesky{
         let excludeList = ['currently','hourly','daily','alerts','flags'];
         return new Promise((resolve, reject) => {
             this.getWeather(location,lat,lng,excludeList).then((response) => {
-                resolve(response.minutely);
+                if(response.minutely){
+                    resolve(response.minutely);
+                }else{
+                    reject(new Error("Minutely data is not supported for this location"));
+                }
             }).catch((error) => {
                 reject(error);
             });
