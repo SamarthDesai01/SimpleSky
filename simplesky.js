@@ -1,4 +1,6 @@
 const request  = require('request');
+const timestamp = require('unix-timestamp');
+timestamp.round = true;
 
 var getQueryString = (lang, units, exclude = [], extend = false) => {
     return new Promise((resolve) => {
@@ -15,9 +17,8 @@ var getQueryString = (lang, units, exclude = [], extend = false) => {
         if(extend){
             queryString+='extend=hourly';
         }
-        resolve(queryString);
-        
-    })
+        resolve(queryString); 
+    });
 }
 
 class simplesky{
@@ -83,12 +84,63 @@ class simplesky{
             }
         });
     }
+
+    /**
+     * Interface with Dark Sky's Time Machine capabilities to get weather data for
+     * the past or future
+     * @param {string} location Natural language entry of location 
+     * @param {string} time Offset from current time of desired weather data,
+     *                      see documentation for input details
+     * @param {number} lat Exact latitude coordinate, optional
+     * @param {number} lng Exact longitude coordinate, optional
+     * @param {Array} exclude Array containing string of blocks to exclude, optional
+     */
+    async getTimeMachine(location, time, lat, lng, exclude = []){
+        let defaultQuery = await getQueryString(this.lang, this.units, exclude, false);
+        let unixTime = await timestamp.now(time);
+        
+        return new Promise((resolve, reject) => {
+            if(location && time){
+                this.getCoordinates(location).then((locationData) => {
+                    let lat = locationData.lat;
+                    let lng = locationData.lng;
+                    request({
+                        url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng},${unixTime}${defaultQuery}`,
+                        json:true,
+                        gzip:true
+                    },(error, response, body) => {
+                        if(error){
+                            reject(new Error("Unable to connect to Dark Sky API"));
+                        }else{
+                            resolve(body);
+                        }
+                    });
+                });
+            }
+            else if(!location && (lat && lng && time)){
+                request({
+                    url:`https://api.darksky.net/forecast/${this.darkAPIKey}/${lat},${lng},${unixTime}${defaultQuery}`,
+                    json:true,
+                    gzip:true
+                },(error, response, body) => {
+                    if(error){
+                        reject(new Error("Unable to connect to Dark Sky API"));
+                    }else{
+                        resolve(body);
+                    }
+                });
+            }
+            else{
+                reject(new Error("Incomplete input parameters"));
+            }
+        });
+    }
     
     /**
      * Get complete weather data for your location
      * @param {string} location Natural language entry of location  
-     * @param {*} lat Exact latitude coordinate, optional
-     * @param {*} lng Exact longitude coordinate, optional
+     * @param {number} lat Exact latitude coordinate, optional
+     * @param {number} lng Exact longitude coordinate, optional
      */
     getFull(location, lat, lng){
         return this.getWeather(location, lat, lng);
@@ -169,7 +221,7 @@ class simplesky{
 
     /**
      * Return an object with the exact coordinates of your specified location
-     * @param {*string} location  
+     * @param {string} location  
      */
     getCoordinates(location){
         return new Promise((resolve,reject) => {
