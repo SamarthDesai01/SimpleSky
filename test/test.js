@@ -103,3 +103,19 @@ describe('getDaily Tests', () =>{
         .and.be.an.instanceOf(Error);
     });
 });
+
+describe('getTimeMachine Tests', ()=>{
+    it('return all weather data for future weather', () => {
+        return weather.getTimeMachine("New York City", "+3y +5M").should.eventually.have.keys('latitude', 'longitude','timezone','currently','hourly','daily','flags','offset');
+    });
+    it('return all weather data for past weather', () => {
+        return weather.getTimeMachine("New York City", "-4y -5M -3m").should.eventually.have.keys('latitude', 'longitude','timezone','currently','hourly','daily','flags','offset');
+    });
+    it('return all weather data for future weather from coordinates', () => {
+        //NOT ALL LOCATIONS WILL SUPPORT DAILY AND HOURLY INFO FOR TIME MACHINE
+        return weather.getTimeMachine(null,'+3y +4M +22m', 40, -74).should.eventually.have.keys('latitude', 'longitude','timezone','currently','hourly','daily','flags','offset');
+    });
+    it('return all weather data for future weather from coordinates', () => {
+        return weather.getTimeMachine(null,'-5y -3M -4m', 40, -74).should.eventually.have.keys('latitude', 'longitude','timezone','currently','hourly','daily','flags','offset');
+    });
+});
