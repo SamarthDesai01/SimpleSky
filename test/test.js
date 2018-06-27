@@ -75,6 +75,12 @@ describe('getMinutely Tests', () =>{
         return weather.getMinutely(null, 30.2870213, -97.7418409).should.eventually.have.property('data').of.length(61)
         .and.not.have.keys('daily','hourly','currently','flags');
     });
+
+    it('throw an error for unsupported locations', () => {
+        return expect(weather.getMinutely(null, 30, 30)).to.eventually.be.rejected
+        .and.be.an.instanceOf(Error);
+    })
+    
     it('throw an error from incorrect input', () => {
         return expect(weather.getMinutely(null, null, null)).to.eventually.be.rejected
         .and.be.an.instanceOf(Error);
