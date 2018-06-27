@@ -89,16 +89,14 @@ class simplesky{
      * Interface with Dark Sky's Time Machine capabilities to get weather data for
      * the past or future
      * @param {string} location Natural language entry of location 
-     * @param {string} time Offset from current time of desired weather data,
-     *                      see documentation for input details
+     * @param {string} time Offset from current time of desired weather data, see documentation for input details
      * @param {number} lat Exact latitude coordinate, optional
      * @param {number} lng Exact longitude coordinate, optional
      * @param {Array} exclude Array containing string of blocks to exclude, optional
      */
     async getTimeMachine(location, time, lat, lng, exclude = []){
         let defaultQuery = await getQueryString(this.lang, this.units, exclude, false);
-        let unixTime = await timestamp.now(time);
-        
+        let unixTime = await this.getTimestamp(time);
         return new Promise((resolve, reject) => {
             if(location && time){
                 this.getCoordinates(location).then((locationData) => {
@@ -243,6 +241,19 @@ class simplesky{
                 }
             });
         });
+    }
+    /**
+     * Return a unicode timestamp with the current time
+     * @param {string} offset string containing offset, optional, see documentation for input details
+     */
+    getTimestamp(offset){
+        if(offset){
+            let offsetVars = offset.split(" ");
+            return timestamp.now.apply(null, offsetVars);
+        }else{
+            return timestamp.now();
+        }
+
     }
 }
 
