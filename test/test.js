@@ -5,7 +5,7 @@ chai.use(chaiAsPromised);
 var should = chai.should();
 var expect = chai.expect;
 
-const simplesky = require('../simplesky.js');
+const simplesky = require('../src/simplesky.js');
 var weather = new simplesky(process.env.MAPSKEY, process.env.DARKSKYKEY);
 
 describe('getFull Tests', () => {
