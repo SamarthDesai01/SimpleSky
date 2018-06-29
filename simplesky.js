@@ -27,8 +27,8 @@ class simplesky{
      * Default constructor for simplesky object
      * @param {string} mapsKey Google Maps API Key
      * @param {string} darkskyKey DarkSky API Key
-     * @param {string} language Desired language for weather output
-     * @param {string} units Desired units for weather output
+     * @param {string} language Desired language for weather output, optional
+     * @param {string} units Desired units for weather output, optional
      */
     constructor(mapsKey, darkskyKey, language = 'en', units = 'auto') {
         this.mapAPIKey = mapsKey;
