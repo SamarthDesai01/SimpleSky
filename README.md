@@ -71,7 +71,6 @@ If you would like to isolate only a single block, methods have already been writ
 For refererence these are 
 
 ```javascript
-getDaily();
 getCurrently();
 getMinutely(); 
 getHourly(); 
