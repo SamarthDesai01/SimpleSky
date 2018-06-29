@@ -2,16 +2,16 @@
 SimpleSky is a promise based, intuitive, and data friendly API Wrapper for Dark Sky. With natural language recognition SimpleSky removes the need to painstakingly acquire manual coordinates to retrieve weather information. 
 
 ## Usage 
-Before getting started you'll need to acquire both a Google Maps API Key as well as a Dark Sky API Key.
+Before getting started you'll need to acquire both a [Google Maps API Key](https://developers.google.com/maps/documentation/geocoding/get-api-key) as well as a [Dark Sky API Key](https://darksky.net/dev).
 
-Once acquired simple create a SimpleSky object and you'll be set up. 
+Once acquired simply create a SimpleSky object and you'll be set up. 
 
 ```javascript
 const simplesky = require('simplesky');
 var weather = new simplesky('YOUR GOOGLE MAPS KEY', 'YOUR DARK SKY KEY');
 ```
 
-Optionally if you would like to set your language and unit defaults (as specified in the Dark Sky API Documentation) for all responses you can do so here as well. By default SimpleSky will return all responses in english and weather units based on geographic location. 
+Optionally if you would like to set your language and unit defaults (as specified in the Dark Sky API Documentation) for all responses you can do so here as well. By default SimpleSky will return all responses in English and weather units based on geographic location. 
 
 ```javascript
 var weather = new simplesky('YOUR GOOGLE MAPS KEY', 'YOUR DARK SKY KEY', 'zh');
@@ -25,7 +25,7 @@ var weather = new simplesky('YOUR GOOGLE MAPS KEY', 'YOUR DARK SKY KEY', 'x-pig-
 
 ### Getting the local temperature
 
-SimpleSky is a complete wrapper for the Dark Sky API, anything you can do with the API you can do here and more easily. SimpleSky is also completely promise based so your code stays clean and easy to read. 
+SimpleSky is a complete wrapper for the Dark Sky API, anything you can do with the API you can do here and without headache. SimpleSky is also completely promise based so your code stays clean and easy to read. 
 
 All methods within SimpleSky allow for either natural language location input or precise latitude/longitude coordinate input to retrieve JSON formatted weather data. 
 
