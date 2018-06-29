@@ -124,3 +124,4 @@ weather.getCoordinates('North Pole').then((response) => {
 }).catch((error) => {
     console.log(error);
 });
+```
