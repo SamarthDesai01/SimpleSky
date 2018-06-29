@@ -1,5 +1,5 @@
 # SimpleSky
-SimpleSky is a promise based, intuitive, and data friendly API Wrapper for Dark Sky. With natural language recognition SimpleSky removes the need to painstakingly acquire manual coordinates to retrive weather information. 
+SimpleSky is a promise based, intuitive, and data friendly API Wrapper for Dark Sky. With natural language recognition SimpleSky removes the need to painstakingly acquire manual coordinates to retrieve weather information. 
 
 ## Usage 
 Before getting started you'll need to acquire both a Google Maps API Key as well as a Dark SKy API Key.
@@ -68,7 +68,7 @@ weather.getWeather("Pirates Museum Madagascar", null, null, ['alerts', 'flags'])
 
 If you would like to isolate only a single block, methods have already been written that exclude all irrelevant data.
 
-For refererence these are 
+For reference these are 
 
 ```javascript
 getCurrently();
