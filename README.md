@@ -51,9 +51,9 @@ weather.getCurrently(null, 37.0326, -95.6188).then((response) => {
 
 ### Customizing weather output
 
-SimpleSky allows you to customize the weather output the Dark Sky API returns helping you to save additional cache space. To do so will require taking advantage of the `getWeather()` method.
+SimpleSky allows you to customize the weather output the Dark Sky API returns to help save you additional cache space. To do so will require taking advantage of the `getWeather()` method.
 
-SimpleSky uses the exact same naming scheme as used in the Dark Sky API documentation. So in order to remove certain blocks from the weather output, we simply pass them in with the same names. 
+SimpleSky uses the exact same naming scheme used in the Dark Sky API documentation. So in order to remove certain blocks from the weather output, we simply pass them in with the same names. 
 
 Once again, all methods within SimpleSky accept longitude and latitude output.
 
