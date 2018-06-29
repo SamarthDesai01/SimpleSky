@@ -1,6 +1,6 @@
 {
   "name": "simplesky",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The easiest, promise-based Dark Sky API Wrapper designed for Node.js",
   "main": "./src/simplesky.js",
   "repository": {
@@ -10,7 +10,16 @@
   "scripts": {
     "test": "mocha"
   },
-  "keywords": ["Simple", "Dark Sky", "API", "Wrapper", "Weather","Promise Based", "Easy", "SimpleSky" ],
+  "keywords": [
+    "Simple",
+    "Dark Sky",
+    "API",
+    "Wrapper",
+    "Weather",
+    "Promise Based",
+    "Easy",
+    "SimpleSky"
+  ],
   "author": "Samarth Desai",
   "license": "ISC",
   "dependencies": {
