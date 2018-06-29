@@ -55,7 +55,7 @@ SimpleSky allows you to customize the weather output the Dark Sky API returns to
 
 SimpleSky uses the exact same naming scheme used in the Dark Sky API documentation. So in order to remove certain blocks from the weather output, we simply pass them in with the same names. 
 
-Once again, all methods within SimpleSky accept longitude and latitude output.
+Once again, all methods within SimpleSky accept longitude and latitude input.
 
 ```javascript
 //Remove the alerts and flags blocks from the weather output
@@ -75,6 +75,7 @@ getCurrently();
 getMinutely(); 
 getHourly(); 
 getDaily();
+getFull();
 
 //NOTE: Not all locations output minutely and hourly data
 ```
@@ -109,3 +110,17 @@ weather.getHourly("UT Austin", null, null, true).then((response) => {
     console.log(error);
 });
 ```
+
+## Misc.
+
+### Getting coordinate data for locations
+
+It's also possible to use SimpleSky to leverage the Google Maps API to get coordinate data for any location. Data is returned as a JSON object with `lat` and `lng` fields.
+
+```javascript
+weather.getCoordinates('North Pole').then((response) => {
+    console.log(response.lat);
+    console.log(response.lng);
+}).catch((error) => {
+    console.log(error);
+});
