@@ -2,7 +2,7 @@
 SimpleSky is a promise based, intuitive, and data friendly API Wrapper for Dark Sky. With natural language recognition SimpleSky removes the need to painstakingly acquire manual coordinates to retrieve weather information. 
 
 ## Usage 
-Before getting started you'll need to acquire both a Google Maps API Key as well as a Dark SKy API Key.
+Before getting started you'll need to acquire both a Google Maps API Key as well as a Dark Sky API Key.
 
 Once acquired simple create a SimpleSky object and you'll be set up. 
 
