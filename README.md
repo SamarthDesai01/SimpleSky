@@ -6,7 +6,7 @@ SimpleSky is a promise based, intuitive, and data friendly API Wrapper for Dark 
 npm install simplesky --save
 ```
 
-##Testing 
+## Testing 
 
 ```
 npm test
