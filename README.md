@@ -5,6 +5,13 @@ SimpleSky is a promise based, intuitive, and data friendly API Wrapper for Dark 
 ```
 npm install simplesky --save
 ```
+
+##Testing 
+
+```
+npm test
+```
+
 ## Usage 
 Before getting started you'll need to acquire both a [Google Maps API Key](https://developers.google.com/maps/documentation/geocoding/get-api-key) as well as a [Dark Sky API Key](https://darksky.net/dev).
 
