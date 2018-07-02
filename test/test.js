@@ -118,4 +118,7 @@ describe('getTimeMachine Tests', ()=>{
     it('return all weather data for future weather from coordinates', () => {
         return weather.getTimeMachine(null,'-5y -3M -4m', 40, -74).should.eventually.have.keys('latitude', 'longitude','timezone','currently','hourly','daily','flags','offset');
     });
+    it('return all weather data using a unix timestamp', () => {
+        return weather.getTimeMachine("Houston, Texas", 255657600).should.eventually.have.keys('latitude', 'longitude','timezone','currently','hourly','daily','flags','offset');
+    });
 });
