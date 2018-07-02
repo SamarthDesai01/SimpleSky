@@ -110,6 +110,18 @@ weather.getTimeMachine("Brooklyn Bridge", "+3y +2M").then((response) => {
 });
 ```
 
+Alternatively, if you would rather get data for a specific time as opposed to getting data from an offset you can do so from this method as well. Simply replace the offset with a UNIX timestamp to get weather data for that specific time. 
+
+```javascript
+weather.getTimeMachine("Brooklyn Bridge", 255657600).then((response) => {
+    console.log(response);
+}).catch((error) => {
+    console.log(error);
+});
+```
+
+Similar to the `getWeather()` method, `getTimeMachine()` also has an `exclude` field if you would like to isolate certain blocks from the response. 
+
 ### Extending hourly data
 
 If you'd like to get the weather data for the next 168 hours as opposed to the next 48, simply do the following.
