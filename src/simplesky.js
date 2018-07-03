@@ -89,7 +89,7 @@ class simplesky{
      * Interface with Dark Sky's Time Machine capabilities to get weather data for
      * the past or future
      * @param {string} location Natural language entry of location 
-     * @param {} time Offset from current time of desired weather data or UNIX timestamp, see documentation for input details
+     * @param {string|number} time Offset from current time of desired weather data or UNIX timestamp, see documentation for input details
      * @param {number} lat Exact latitude coordinate, optional
      * @param {number} lng Exact longitude coordinate, optional
      * @param {Array} exclude Array containing string of blocks to exclude, optional
