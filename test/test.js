@@ -10,10 +10,10 @@ var weather = new simplesky(process.env.MAPSKEY, process.env.DARKSKYKEY);
 
 describe('getFull Tests', () => {
     it('return the correct latitude coordinate', () => {
-        return weather.getFull("Austin's Pizza Campus").should.eventually.have.property('latitude', 30.2870213);
+        return weather.getFull("Austin's Pizza Campus").should.eventually.have.property('latitude', 30.2870197);
     });
     it('return the correct longitude coordinate', () => {
-        return weather.getFull("Austin's Pizza Campus").should.eventually.have.property('longitude', -97.7418409);
+        return weather.getFull("Austin's Pizza Campus").should.eventually.have.property('longitude', -97.74190109999999);
     });
     it('get weather from coordinate input', () => {
         return weather.getFull(null, 30.2870213, -97.7418409).should.eventually.include({'latitude': 30.2870213,'longitude': -97.7418409})
